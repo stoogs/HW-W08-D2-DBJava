@@ -43,6 +43,7 @@ public class DBAuthor {
             }
             return result;
         }
+
     public static List<Author> getAll(){
         session = HibernateUtil.getSessionFactory().openSession();
         List<Author> results = null;
@@ -57,4 +58,25 @@ public class DBAuthor {
         }
         return results;
     }
+
+    public static void update(int id, String newName) { // ADDED
+    Author result = null;
+        session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Criteria cr = session.createCriteria(Author.class);
+            cr.add(Restrictions.eq("id",id));
+            result = (Author) cr.uniqueResult();
+            System.out.println(result.getName());
+            result.setName(newName);
+            transaction = session.beginTransaction();
+            session.update(result);
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
 }

@@ -34,6 +34,11 @@ public class Runner {
         //LIST AUTHORS
         System.out.println(DBBook.getAll());
         System.out.println(DBAuthor.getAll());
+
+        DBAuthor.update(1,"Author  1");
+        DBAuthor.update(2,"Author No 2");
+        DBAuthor.update(3,"Author  3");
+
     }
 
 
