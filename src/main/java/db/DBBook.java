@@ -1,5 +1,6 @@
 package db;
 
+import models.Author;
 import models.Book;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -55,5 +56,25 @@ public class DBBook {
             session.close();
         }
         return results;
+    }
+
+    public static void update(int id, String newName) {
+        Book result = null;
+        session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Criteria cr = session.createCriteria(Book.class);
+            cr.add(Restrictions.eq("id",id));
+            result = (Book) cr.uniqueResult();
+            System.out.println(result.getName());
+            result.setName(newName);
+            transaction = session.beginTransaction();
+            session.update(result);
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
 }
